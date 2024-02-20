@@ -1,0 +1,209 @@
+{
+  "version": "0.1.0",
+  "name": "distribution",
+  "instructions": [
+    {
+      "name": "initialize",
+      "docs": [
+        "* Admin should initialize Global PDA once after deploy program\r\n     *\r\n     * Params:\r\n     *  - admin_wallet: the contract immutable admin address\r\n     *  - caller_wallet: initial caller address who has the rights for reward\r\n     *    distribution\r\n     *  - staring_block: this contract will be distribute reward for blocks\r\n     *    since after `starting_block`"
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "globalAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "adminWallet",
+          "type": "publicKey"
+        },
+        {
+          "name": "callerWallet",
+          "type": "publicKey"
+        },
+        {
+          "name": "startingBlock",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "updateCallerAddress",
+      "docs": [
+        "* Admin able to update the caller address\r\n     *\r\n     * Params:\r\n     *  - new_caller: the new caller address"
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "globalAuthority",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "newCaller",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "mineBlock",
+      "docs": [
+        "* Caller distribute reward to won miner for a specific block number\r\n     *\r\n     * Params:\r\n     *  - block_number: the number of mined block"
+      ],
+      "accounts": [
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "globalAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "minedInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "winner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "blockNumber",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "GlobalInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "publicKey"
+          },
+          {
+            "name": "caller",
+            "type": "publicKey"
+          },
+          {
+            "name": "currentReward",
+            "type": "u64"
+          },
+          {
+            "name": "halvedTimes",
+            "type": "u64"
+          },
+          {
+            "name": "lastHalvedBlockNumber",
+            "type": "u64"
+          },
+          {
+            "name": "lastMineTime",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MinedInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "winnerAddress",
+            "type": "publicKey"
+          },
+          {
+            "name": "blockNumber",
+            "type": "u64"
+          },
+          {
+            "name": "rewardSent",
+            "type": "u64"
+          },
+          {
+            "name": "timeStamp",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAdmin",
+      "msg": "This address is not admin wallet"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidCaller",
+      "msg": "This address is not caller wallet"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidMiningTime",
+      "msg": "Mining is not allowed within 5 minutes"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidBlockNumber",
+      "msg": "Passed block number is not valid"
+    }
+  ],
+  "metadata": {
+    "address": "GWnj193LurWJ3jffb9hvsmAFTeAaAPD7nBSigCPSufw2"
+  }
+}

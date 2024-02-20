@@ -1,0 +1,18 @@
+[features]
+seeds = false
+skip-lint = false
+[programs.devnet]
+distribution = "2YkXmCtRc6BzST3eavg7pxnYRJmoMBXEB8pzDN77wuhN"
+
+[programs.mainnet]
+distribution = "GWnj193LurWJ3jffb9hvsmAFTeAaAPD7nBSigCPSufw2"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "Mainnet"
+wallet = "../id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
